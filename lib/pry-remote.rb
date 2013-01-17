@@ -189,8 +189,6 @@ module PryRemote
       params = Slop.parse args, :help => true do
         banner "#$PROGRAM_NAME [OPTIONS]"
 
-        on :h, :host, "Host of the server (#{DefaultHost})", true,
-           :default => DefaultHost
         on :p, :port, "Port of the server (#{DefaultPort})", true,
            :as => Integer, :default => DefaultPort
         on :c, :capture, "Captures $stdout and $stderr from the server (true)",
@@ -198,7 +196,6 @@ module PryRemote
         on :f, "Disables loading of .pryrc to get input and "
       end
 
-      @host = params[:host]
       @port = params[:port]
 
       @capture = params[:capture]
@@ -206,15 +203,12 @@ module PryRemote
       Pry.initial_session_setup unless params[:f]
     end
 
-    # @return [String] Host of the server
-    attr_reader :host
-
     # @return [Integer] Port of the server
     attr_reader :port
 
     # @return [String] URI for DRb
     def uri
-      "druby://#{host}:#{port}"
+      "druby://localhost:#{port}"
     end
 
     attr_reader :capture
